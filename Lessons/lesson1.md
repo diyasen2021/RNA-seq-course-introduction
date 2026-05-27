@@ -1,4 +1,4 @@
-# TCGA-KIRC RNA-seq Pipeline
+RNA-seq Pipeline
 ## Part 1 — Environment Setup, WSL Installation & Data Download
 
 ---
