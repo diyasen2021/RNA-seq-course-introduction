@@ -1,4 +1,4 @@
-# TCGA-KIRC RNA-seq Pipeline
+# RNA-seq Pipeline
 ## Part 2 — Quality Control & Trimming
 
 ---
