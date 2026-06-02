@@ -317,9 +317,7 @@ This CSV file is what connects sample IDs to biological conditions in DESeq2. Ch
 head -2 data/metadata/SraRunTable.txt | tr ',' '\n' | nl
 ```
 
-> **Why `patient_id` matters:** In Part 4 (DESeq2) you will use the `patient_id` column as a blocking factor in the design formula: `~ patient_id + condition`. This accounts for inter-patient variability and increases statistical power — it is what makes a paired design more powerful than an unpaired one.
-
----
+Select your 18-sample subset (6 patients × 3 conditions). For the pipeline tutorial we want 6 patients, each contributing all three samples — normal, primary, metastasis. This preserves the matched triplet structure.Then create your subset accession list. Save it in SRR_accessions.txt.
 
 ## 7. Downloading FASTQ files with fasterq-dump
 
@@ -394,8 +392,6 @@ Run it:
 chmod +x scripts/bash/01_download_fastq.sh
 bash scripts/bash/01_download_fastq.sh 2>&1 | tee logs/01_download.log
 ```
-
-> ⚠️ **Download time estimate:** Downloading 12 samples at ~5 GB each will take **2–6 hours** depending on your connection speed and NCBI server load. Run this overnight. The `tee logs/01_download.log` ensures you have a record even if your terminal closes. If interrupted, just re-run — already-downloaded files are skipped.
 
 ### 7.3 Download the Salmon reference transcriptome
 
