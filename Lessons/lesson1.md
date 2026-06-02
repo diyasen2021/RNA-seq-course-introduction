@@ -292,53 +292,29 @@ git commit -m "Initial project structure"
 
 ---
 
-## 6. Downloading TCGA-KIRC metadata & SRA accessions
+## 6.  Get the SRR accession list from SRA Run Selector
 
-Before downloading any FASTQ files, we need to know *which* samples to download. TCGA-KIRC has 606 samples in SRA, but we want 6 tumors with **matched normals** — meaning the same patient contributed both the tumor and adjacent normal tissue biopsy. This paired design gives us the strongest statistical comparison and controls for inter-patient genetic variation.
+Go to the SRA Run Selector for this dataset: https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRP029880
 
-### 6.1 Create the sample accession list
+On that page:
 
-The following 12 SRA run accessions are 6 TCGA-KIRC patients with matched tumor-normal pairs. They were selected to be representative of the cohort (mix of tumor grades, adequate sequencing depth ~30M reads/sample) and are single-end 50bp reads.
+Click "Metadata" — downloads SraRunTable.txt, a CSV with one row per sample containing SRR accession, sample name, condition, patient ID, and sequencing metadata.
+Click "Accession List" — downloads SRR_Acc_List.txt, a plain text file with one SRR accession per line.
+
+Download both files and move them into your project:
 
 ```bash
-cat > data/metadata/SRR_accessions.txt << 'EOF'
-# TCGA-KIRC matched tumor-normal pairs (6 patients)
-# Format: SRR_accession  sample_type  patient_id
-SRR1616919  tumor   TCGA-B0-5117
-SRR1616920  normal  TCGA-B0-5117
-SRR1616921  tumor   TCGA-B0-5698
-SRR1616922  normal  TCGA-B0-5698
-SRR1616923  tumor   TCGA-B0-5710
-SRR1616924  normal  TCGA-B0-5710
-SRR1616925  tumor   TCGA-B0-5711
-SRR1616926  normal  TCGA-B0-5711
-SRR1616927  tumor   TCGA-CJ-4642
-SRR1616928  normal  TCGA-CJ-4642
-SRR1616929  tumor   TCGA-CJ-4896
-SRR1616930  normal  TCGA-CJ-4896
-EOF
+mv ~/Downloads/SraRunTable.txt data/metadata/SraRunTable.txt
+mv ~/Downloads/SRR_Acc_List.txt data/metadata/SRR_Acc_List.txt
 ```
 
-### 6.2 Create the sample metadata sheet
+### 6.2 Inspect the SraRunTable
 
-This CSV file is what connects sample IDs to biological conditions in DESeq2. Mistakes here propagate through all downstream analyses — double-check it carefully.
+This CSV file is what connects sample IDs to biological conditions in DESeq2. Check what columns are available
+
 
 ```bash
-cat > data/metadata/sample_metadata.csv << 'EOF'
-sample_id,condition,patient_id,tissue_source,tumor_stage
-SRR1616919,tumor,TCGA-B0-5117,kidney,T3aN0M0
-SRR1616920,normal,TCGA-B0-5117,kidney,NA
-SRR1616921,tumor,TCGA-B0-5698,kidney,T2N0M0
-SRR1616922,normal,TCGA-B0-5698,kidney,NA
-SRR1616923,tumor,TCGA-B0-5710,kidney,T1bN0M0
-SRR1616924,normal,TCGA-B0-5710,kidney,NA
-SRR1616925,tumor,TCGA-B0-5711,kidney,T3aN0M0
-SRR1616926,normal,TCGA-B0-5711,kidney,NA
-SRR1616927,tumor,TCGA-CJ-4642,kidney,T1aN0M0
-SRR1616928,normal,TCGA-CJ-4642,kidney,NA
-SRR1616929,tumor,TCGA-CJ-4896,kidney,T2N0M0
-SRR1616930,normal,TCGA-CJ-4896,kidney,NA
-EOF
+head -2 data/metadata/SraRunTable.txt | tr ',' '\n' | nl
 ```
 
 > **Why `patient_id` matters:** In Part 4 (DESeq2) you will use the `patient_id` column as a blocking factor in the design formula: `~ patient_id + condition`. This accounts for inter-patient variability and increases statistical power — it is what makes a paired design more powerful than an unpaired one.
