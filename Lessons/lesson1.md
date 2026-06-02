@@ -19,23 +19,30 @@ RNA-seq Pipeline
 
 ## 1. Scientific background & project overview
 
-Kidney renal clear cell carcinoma (ccRCC) is the most common subtype of kidney cancer (~75% of all cases). Despite its name, it is one of the most transcriptionally distinctive cancers known. Loss of the **VHL (Von Hippel-Lindau)** tumour suppressor gene — which occurs in ~90% of ccRCC tumors — triggers a massive rewiring of cellular metabolism through constitutive activation of the **HIF-1α/HIF-2α hypoxia response pathway**.
+Colorectal cancer (CRC) is the third most common cancer worldwide and the second leading cause of cancer-related death. While early-stage CRC is highly treatable, the development of liver metastasis — which occurs in approximately 50% of patients — dramatically worsens prognosis, with 5-year survival dropping from ~90% for localised disease to ~14% for metastatic disease.
+The molecular mechanisms driving this metastatic transition are incompletely understood, making it one of the most active areas of cancer transcriptomics research. RNA-seq allows us to ask directly: what changes in gene expression enable a primary colorectal tumour to invade, survive in circulation, and colonise the liver?
+This makes GSE50760 an exceptional teaching dataset:
 
-This makes ccRCC an ideal model for RNA-seq analysis:
-- The biology is well-understood, so you can benchmark your results against known gene lists
-- The transcriptional changes are dramatic and reproducible across patients
-- The TCGA-KIRC cohort provides deep clinical metadata: VHL mutation status, ISUP grade, overall survival
+The three-condition design (normal → primary tumour → liver metastasis) captures disease progression, not just presence or absence of cancer
+All three samples come from the same 18 patients — a perfectly matched triplet design that controls for inter-patient genetic variation
+The biology is clinically urgent — metastasis is what kills CRC patients
+The dataset has been cited and reanalysed multiple times in the literature, so your results are directly benchmarkable
+
+- The three-condition design (normal → primary tumour → liver metastasis) captures disease **progression**, not just presence or absence of cancer
+- All three samples come from the **same 18 patients** — a perfectly matched triplet design that controls for inter-patient genetic variation
+- The biology is clinically urgent — metastasis is what kills CRC patients
+- The dataset has been cited and reanalysed multiple times in the literature, so your results are directly benchmarkable
 
 ### What you will produce by the end of this project
 
 | Analysis | Description |
 |----------|-------------|
-| **Differential Expression** | Tumor vs. matched normal kidney tissue. Top DEGs benchmarked against published VHL/HIF target gene lists. |
-| **VHL Subgroup Analysis** | Transcriptional comparison between VHL-mutant and VHL-wildtype tumors using clinical mutation metadata. |
-| **Pathway Enrichment (GSEA)** | GSEA against Hallmark and KEGG gene sets. Expected hits: `HYPOXIA`, `GLYCOLYSIS`, `ANGIOGENESIS`. |
-| **Survival Analysis** | Kaplan-Meier curves stratified by top DEG expression. Univariate Cox regression for prognostic genes. |
+| **Differential Expression (3 contrasts)** | Primary vs Normal, Metastasis vs Normal, and Metastasis vs Primary — identifying genes driving each stage of progression |
+| **Metastasis gene signature** | Genes specifically upregulated in liver metastasis but not primary tumour — the transcriptional fingerprint of metastatic transition |
+| **Pathway Enrichment (GSEA)** | GSEA against Hallmark and KEGG gene sets. Expected hits: `EPITHELIAL_MESENCHYMAL_TRANSITION`, `ANGIOGENESIS`, `TGF_BETA_SIGNALLING` |
+| **Visualisation & reporting** | PCA, volcano plots, and heatmaps publication-ready enough for a portfolio or paper figure |
 
-> **Note on dataset scope:** In this tutorial you will download and process a **subset of 12 samples** (6 tumor + 6 matched normal) through the full FASTQ-to-counts pipeline to learn every step hands-on. In Part 4 (DESeq2), you will load the full TCGA-KIRC cohort (533 tumors + 72 normals) via `recount3` for the statistical analyses. This mirrors real-world practice: learn the pipeline on small data, do the science on large data.
+> **Note on dataset scope:** In this tutorial you will download and process a **subset of 18 samples** — one triplet (normal, primary, metastasis) from each of 6 patients — through the full FASTQ-to-counts pipeline to learn every step hands-on. In Part 4 (DESeq2), you will load the **full GSE50760 cohort** (all 54 samples, all 18 patients) using the NCBI-generated raw counts matrix directly from GEO. This mirrors real-world practice: learn the pipeline on a manageable subset, do the science on the complete dataset.
 
 ---
 
