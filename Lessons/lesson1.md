@@ -280,7 +280,7 @@ EOF
 
 # Create README
 cat > README.md << 'EOF'
-# TCGA-KIRC RNA-seq Pipeline
+# RNA-seq Pipeline
 Full RNA-seq pipeline: FASTQ → Salmon → DESeq2 → GSEA → Survival analysis
 Dataset: TCGA Kidney Renal Clear Cell Carcinoma (KIRC)
 Samples: 6 tumor + 6 matched normal (pipeline) + full cohort via recount3
