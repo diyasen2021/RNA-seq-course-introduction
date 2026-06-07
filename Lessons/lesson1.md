@@ -472,6 +472,3 @@ git commit -m "Part 1 complete: data downloaded, Salmon index built"
 
 ---
 
-
-
-*TCGA-KIRC RNA-seq Pipeline · Part 1 of 5 · Masters in Bioinformatics Portfolio Project*
