@@ -35,6 +35,54 @@ QC is not a formality. It is where you build your first understanding of what yo
 
 ## 2. What FastQC measures
 
+### What Does a FASTQ File Look Like?
+
+A FASTQ file stores sequencing reads and their quality scores. Each read consists of **four lines**.
+
+Example:
+
+```text
+@SRR123456.1
+ATCGGATCGATCGATCGATC
++
+IIIIIIIIIIIIIIIIIIIII
+```
+
+### Line 1: Sequence Identifier
+
+```text
+@SRR123456.1
+```
+
+This is the read header and contains information about the sequencing run, instrument, flowcell, lane, and read number.
+
+### Line 2: Sequence
+
+```text
+ATCGGATCGATCGATCGATC
+```
+
+This is the nucleotide sequence determined by the sequencer.
+
+### Line 3: Separator
+
+```text
++
+```
+
+This line separates the sequence from the quality scores.
+
+### Line 4: Quality Scores
+
+```text
+IIIIIIIIIIIIIIIIIIIII
+```
+
+Each character represents the quality score of the corresponding base in Line 2.
+
+---
+
+### What does FastQC measure?
 FastQC reads your FASTQ file and runs 11 diagnostic modules. Each module either **passes** (green ✅), **warns** (orange ⚠️), or **fails** (red ❌). Importantly, these flags are calibrated for generic data — some "failures" are expected and acceptable in RNA-seq. You need to interpret them in context, not just count green ticks.
 
 | Module | What it measures | Expected in RNA-seq |
