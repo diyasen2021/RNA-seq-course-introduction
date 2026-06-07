@@ -180,7 +180,7 @@ T = Q20
 
 ---
 
-# Why Did Illumina Switch to Phred+33?
+### Why Did Illumina Switch to Phred+33?
 
 The old Phred+64 encoding caused several issues:
 
@@ -192,7 +192,7 @@ Around 2011–2012, Illumina adopted **Phred+33**, which matched the original Sa
 
 ---
 
-# How FastQC Determines the Encoding
+### How FastQC Determines the Encoding
 
 FastQC examines the range of quality score characters present in the FASTQ file.
 
