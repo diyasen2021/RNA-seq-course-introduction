@@ -80,6 +80,23 @@ IIIIIIIIIIIIIIIIIIIII
 
 Each character represents the quality score of the corresponding base in Line 2.
 
+### The Phred quality score
+
+The quality score Q is defined as:
+
+```
+Q = -10 × log₁₀(P_error)
+```
+
+| Q score | Error probability | Accuracy |
+|---------|------------------|----------|
+| Q10 | 1 in 10 | 90% |
+| Q20 | 1 in 100 | 99% |
+| Q30 | 1 in 1,000 | 99.9% |
+| Q40 | 1 in 10,000 | 99.99% |
+
+**Rule of thumb:** You want median per-base quality above Q28 across the entire read. Q20 is the minimum acceptable threshold — bases below Q20 should be trimmed.
+
 ---
 
 ### What does FastQC measure?
@@ -99,24 +116,7 @@ FastQC reads your FASTQ file and runs 11 diagnostic modules. Each module either 
 | **Adapter content** | Illumina adapter sequences found in reads | Should be near zero after good library prep; if high, trimming is needed |
 | **Kmer content** | Enriched k-mers at specific positions | Often fails in RNA-seq — usually not actionable |
 
-### The Phred quality score
 
-The quality score Q is defined as:
-
-```
-Q = -10 × log₁₀(P_error)
-```
-
-| Q score | Error probability | Accuracy |
-|---------|------------------|----------|
-| Q10 | 1 in 10 | 90% |
-| Q20 | 1 in 100 | 99% |
-| Q30 | 1 in 1,000 | 99.9% |
-| Q40 | 1 in 10,000 | 99.99% |
-
-**Rule of thumb:** You want median per-base quality above Q28 across the entire read. Q20 is the minimum acceptable threshold — bases below Q20 should be trimmed.
-
----
 
 ## 3. Running FastQC on all 12 samples
 
