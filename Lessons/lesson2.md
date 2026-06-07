@@ -97,6 +97,145 @@ Q = -10 × log₁₀(P_error)
 
 **Rule of thumb:** You want median per-base quality above Q28 across the entire read. Q20 is the minimum acceptable threshold — bases below Q20 should be trimmed.
 
+# The Problem: FASTQ Stores Characters, Not Numbers
+
+FASTQ files do not store quality scores as integers.
+
+Instead, quality scores are encoded as ASCII characters.
+
+Example:
+
+```text
+IIIIIIIIIIII
+```
+
+Software must decode these characters back into numerical quality scores.
+
+---
+
+# Phred+33 Encoding
+
+Modern sequencing data uses:
+
+```text
+Quality Score + 33
+```
+
+| Q Score | ASCII Character |
+|----------|----------------|
+| 0 | ! |
+| 10 | + |
+| 20 | 5 |
+| 30 | ? |
+| 40 | I |
+
+Example:
+
+ASCII value of I = 73
+
+Quality score:
+
+```text
+73 - 33 = 40
+```
+
+Therefore:
+
+```text
+I = Q40
+```
+
+---
+
+# Phred+64 Encoding
+
+Older Illumina instruments used:
+
+```text
+Quality Score + 64
+```
+
+| Q Score | ASCII Character |
+|----------|----------------|
+| 0 | @ |
+| 10 | J |
+| 20 | T |
+| 30 | ^ |
+
+Example:
+
+ASCII value of T = 84
+
+Quality score:
+
+```text
+84 - 64 = 20
+```
+
+Therefore:
+
+```text
+T = Q20
+```
+
+---
+
+# Why Did Illumina Switch to Phred+33?
+
+The old Phred+64 encoding caused several issues:
+
+- Different sequencing platforms used different encodings.
+- Bioinformatics tools frequently interpreted quality scores incorrectly.
+- Data sharing between platforms was complicated.
+
+Around 2011–2012, Illumina adopted **Phred+33**, which matched the original Sanger FASTQ specification.
+
+---
+
+# How FastQC Determines the Encoding
+
+FastQC examines the range of quality score characters present in the FASTQ file.
+
+If it sees characters such as:
+
+```text
+!
+"
+#
+$
+%
+```
+
+the file must be Phred+33 because these characters cannot occur in Phred+64 encoding.
+
+Typical FastQC output:
+
+```text
+Encoding: Sanger / Illumina 1.9
+```
+
+or
+
+```text
+Encoding: Illumina 1.9
+```
+
+Both indicate Phred+33 encoding.
+
+---
+
+# Modern RNA-seq and FASTQ Files
+
+For data generated on modern Illumina platforms such as:
+
+- NovaSeq
+- NextSeq
+- MiSeq
+
+you can safely assume the FASTQ files use **Phred+33** encoding.
+
+Most contemporary bioinformatics tools expect Phred+33 by default.
+
 ---
 
 ### What does FastQC measure?
