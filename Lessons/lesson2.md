@@ -395,16 +395,7 @@ multiqc results/fastqc/pre_trim/ \
   2>&1 | tee logs/03_multiqc_pretrim.log
 ```
 
-Open `results/multiqc/pre_trim/KIRC_pre_trim_multiqc.html` in your browser.
-
-**Expected output:**
-```
-[INFO   ]         multiqc : This is MultiQC v1.14
-[INFO   ]         multiqc : Template    : default
-[INFO   ]          fastqc : Found 12 reports
-[INFO   ]         multiqc : Report      : results/multiqc/name_multiqc.html
-[INFO   ]         multiqc : Data        : results/multiqc/name_multiqc_data
-```
+Open *multiqc.html in your browser.
 
 ---
 
@@ -433,9 +424,10 @@ MultiQC plots mean quality per position as a heatmap across all samples. You are
 
 ### 6.3 Adapter content panel
 
-This panel overlays adapter content curves for all 12 samples. In TCGA data you may see:
+This panel overlays adapter content curves for all 12 samples. You may see:
 - Low-level adapter content (1–5%) → trim as standard practice
 - Higher adapter content (5–15%) in some samples → those samples had shorter inserts
+- For more information about adapters - https://www.ecseq.com/support/ngs/trimming-adapter-sequences-is-it-necessary
 
 ### 6.4 Per-sample status summary
 
