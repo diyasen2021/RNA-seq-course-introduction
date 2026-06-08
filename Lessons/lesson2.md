@@ -443,6 +443,7 @@ Even if adapter content looks low, trimming is standard practice and costs nothi
 
 ### 7.1 Understanding Trimmomatic parameters
 
+For more information about the parameters check http://www.usadellab.org/cms/?page=trimmomatic.
 Trimmomatic processes reads through a series of steps in the order you specify them:
 
 | Step | Parameter | What it does |
