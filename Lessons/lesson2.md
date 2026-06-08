@@ -392,7 +392,6 @@ Looking at 12 individual FastQC HTML files is tedious and makes it hard to spot 
 multiqc results/fastqc/pre_trim/ \
   --outdir results/multiqc/pre_trim \
   --filename "KIRC_pre_trim_multiqc" \
-  --title "TCGA-KIRC Pre-Trimming QC" \
   2>&1 | tee logs/03_multiqc_pretrim.log
 ```
 
@@ -403,8 +402,8 @@ Open `results/multiqc/pre_trim/KIRC_pre_trim_multiqc.html` in your browser.
 [INFO   ]         multiqc : This is MultiQC v1.14
 [INFO   ]         multiqc : Template    : default
 [INFO   ]          fastqc : Found 12 reports
-[INFO   ]         multiqc : Report      : results/multiqc/pre_trim/KIRC_pre_trim_multiqc.html
-[INFO   ]         multiqc : Data        : results/multiqc/pre_trim/KIRC_pre_trim_multiqc_data
+[INFO   ]         multiqc : Report      : results/multiqc/name_multiqc.html
+[INFO   ]         multiqc : Data        : results/multiqc/name_multiqc_data
 ```
 
 ---
