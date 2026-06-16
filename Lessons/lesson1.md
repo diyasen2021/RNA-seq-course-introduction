@@ -336,8 +336,19 @@ vdb-config --interactive
 # Go to CACHE tab → set location to ~/kirc_rnaseq/data/raw_fastq/
 # Press 's' to save, 'x' to exit
 ```
+### 7.2 Download commands
 
-### 7.2 Download script
+```
+prefetch SRR975551
+vdb-validate SRR975551
+fasterq-dump --split-files --threads 4 SRR975551
+```
+
+`prefetch` downloads the entire run and stores it locally in SRA's native compressed `.sra` format. 
+`vdb-validate` checks the integrity of the downloaded `.sra` file.
+`fasterq-dump` extracts reads from the `.sra` file and writes them as FASTQ files.
+
+### 7.3 Download script
 
 Save this as `scripts/bash/01_download_fastq.sh`. The script logs progress, handles errors, and can be restarted if interrupted — already-downloaded files are automatically skipped.
 
