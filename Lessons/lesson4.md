@@ -117,43 +117,27 @@ If `all(counts_matrix == round(counts_matrix))` returns `FALSE`, stop here — y
 
 ---
 
-## 5. Building sample metadata — the paired design
+## 5. Get metadata
 
-The count matrix only tells you *what* was measured. It says nothing about which sample belongs to which patient or which condition — that information lives in the GEO **series matrix** / sample characteristics, and you have to build it yourself as a metadata table.
-
-This is written generically below — using a small number of placeholder variables you set once at the top — so you can adapt it to any cohort size without rewriting the logic.
+The count matrix only tells you *what* was measured. It says nothing about which sample belongs to which patient or which condition — that information lives in the GEO **series matrix** / sample characteristics, and you can query it.
 
 ```r
-# --- Set these once, based on your specific GEO series ---
-n_patients        <- length(unique(condition_levels))   # placeholder, replaced below
-condition_levels  <- c("normal", "primary", "metastasis")  # edit to match your study design
-samples_per_patient <- length(condition_levels)
+# --- GEOquery library ---
+library(GEOquery)
 
-# --- Build metadata programmatically rather than typing it by hand ---
-# gsm_ids should be in the SAME order as colnames(counts_matrix)
-gsm_ids <- colnames(counts_matrix)
+# Downloads the series matrix file and parses it into an ExpressionSet
+gse <- getGEO("GSE50760", GSEMatrix = TRUE)
 
-# patient_id and condition vectors must be supplied from the GEO sample
-# characteristics (series matrix) — example construction shown below assumes
-# samples are grouped in blocks of `samples_per_patient`, in matrix column order.
-# Replace this block with an explicit mapping if your matrix columns are not
-# already grouped by patient.
+# getGEO can return a list if there are multiple platforms — usually just take [[1]]
+gse <- gse[[1]]
 
-n_total_samples <- ncol(counts_matrix)
-n_patients      <- n_total_samples / samples_per_patient
+# The actual sample metadata you want lives in pData()
+sample_metadata <- pData(gse)
 
-coldata <- data.frame(
-  gsm_id      = gsm_ids,
-  patient_id  = factor(rep(paste0("patient_", seq_len(n_patients)),
-                            each = samples_per_patient)),
-  condition   = factor(rep(condition_levels, times = n_patients),
-                        levels = condition_levels),
-  row.names   = gsm_ids
-)
-
-head(coldata)
-table(coldata$condition)        # should be balanced: same n per condition
-table(coldata$patient_id)       # should show samples_per_patient for every patient
+# Look at it
+dim(sample_metadata)
+colnames(sample_metadata)
+head(sample_metadata)
 ```
 
 **Important:** the placeholder construction above assumes your matrix columns are already ordered patient-by-patient, condition-by-condition. In practice, GEO column order is not guaranteed to follow this pattern — always cross-check `coldata` against the actual GEO sample characteristics table (visible on the GEO accession page under each GSM) before proceeding. A mismatched condition/patient label is the single most common cause of meaningless DESeq2 results, and it produces no error — only wrong answers.
